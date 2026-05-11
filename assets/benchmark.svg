@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 420" width="760" height="420"
+     font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <!-- Background -->
+  <rect width="760" height="420" fill="#0e1116"/>
+
+  <!-- Title -->
+  <text x="380" y="36" text-anchor="middle" fill="#ffffff" font-size="20" font-weight="700">
+    Primary-context tokens — Opus 4.6 vs AgentFlow
+  </text>
+  <text x="380" y="58" text-anchor="middle" fill="#8b94a7" font-size="13">
+    Tokens that enter Claude Code's working context per task (lower is better)
+  </text>
+
+  <!-- Legend -->
+  <g transform="translate(260,80)">
+    <rect x="0" y="0" width="14" height="14" fill="#f0884e" rx="2"/>
+    <text x="22" y="11" fill="#e5e9f0" font-size="13">Opus 4.6 (baseline)</text>
+    <rect x="180" y="0" width="14" height="14" fill="#f4c247" rx="2"/>
+    <text x="202" y="11" fill="#e5e9f0" font-size="13">AgentFlow (routed)</text>
+  </g>
+
+  <!-- Chart area: 80,120 → 700,330 -->
+  <!-- Y-axis: 0..2800 → 330..120 (height 210) -->
+  <!-- Grid lines + Y labels -->
+  <g stroke="#1f2630" stroke-width="1">
+    <line x1="80" y1="120" x2="700" y2="120"/>
+    <line x1="80" y1="173" x2="700" y2="173"/>
+    <line x1="80" y1="225" x2="700" y2="225"/>
+    <line x1="80" y1="278" x2="700" y2="278"/>
+    <line x1="80" y1="330" x2="700" y2="330"/>
+  </g>
+  <g fill="#6b7384" font-size="11" text-anchor="end">
+    <text x="72" y="124">2800</text>
+    <text x="72" y="177">2100</text>
+    <text x="72" y="229">1400</text>
+    <text x="72" y="282"> 700</text>
+    <text x="72" y="334">   0</text>
+  </g>
+
+  <!-- Task 1: Summarize  Opus=2630  Agent=195 -->
+  <!-- bar height: tokens * (210/2800) -->
+  <!-- 2630 → 197.25 px tall, top = 330-197.25 = 132.75 -->
+  <!-- 195 → 14.6 px tall, top = 330-14.6 = 315.4 -->
+  <g transform="translate(160,0)">
+    <rect x="-40" y="132.75" width="36" height="197.25" fill="#f0884e" rx="4"/>
+    <rect x="4"   y="315.4"  width="36" height="14.6"  fill="#f4c247" rx="4"/>
+    <text x="-22" y="124" text-anchor="middle" fill="#f0884e" font-size="12" font-weight="600">2630</text>
+    <text x="22"  y="308" text-anchor="middle" fill="#f4c247" font-size="12" font-weight="600">195</text>
+    <text x="0"   y="352" text-anchor="middle" fill="#e5e9f0" font-size="13" font-weight="600">Summarize</text>
+    <text x="0"   y="370" text-anchor="middle" fill="#9aa3b2" font-size="11">−92.6% tokens</text>
+    <text x="0"   y="388" text-anchor="middle" fill="#7fd49a" font-size="11">✓ quality parity</text>
+  </g>
+
+  <!-- Task 2: Read+query  Opus=838  Agent=161 -->
+  <!-- 838 → 62.85 px, top = 267.15 -->
+  <!-- 161 → 12.075, top = 317.93 -->
+  <g transform="translate(360,0)">
+    <rect x="-40" y="267.15" width="36" height="62.85" fill="#f0884e" rx="4"/>
+    <rect x="4"   y="317.93" width="36" height="12.07" fill="#f4c247" rx="4"/>
+    <text x="-22" y="259" text-anchor="middle" fill="#f0884e" font-size="12" font-weight="600">838</text>
+    <text x="22"  y="310" text-anchor="middle" fill="#f4c247" font-size="12" font-weight="600">161</text>
+    <text x="0"   y="352" text-anchor="middle" fill="#e5e9f0" font-size="13" font-weight="600">Read + query</text>
+    <text x="0"   y="370" text-anchor="middle" fill="#9aa3b2" font-size="11">−80.8% tokens</text>
+    <text x="0"   y="388" text-anchor="middle" fill="#7fd49a" font-size="11">✓ quality parity</text>
+  </g>
+
+  <!-- Task 3: Gen test  Opus=405  Agent=412 -->
+  <!-- 405 → 30.375, top = 299.625 -->
+  <!-- 412 → 30.9, top = 299.1 -->
+  <g transform="translate(560,0)">
+    <rect x="-40" y="299.63" width="36" height="30.37" fill="#f0884e" rx="4"/>
+    <rect x="4"   y="299.10" width="36" height="30.90" fill="#f4c247" rx="4"/>
+    <text x="-22" y="291" text-anchor="middle" fill="#f0884e" font-size="12" font-weight="600">405</text>
+    <text x="22"  y="291" text-anchor="middle" fill="#f4c247" font-size="12" font-weight="600">412</text>
+    <text x="0"   y="352" text-anchor="middle" fill="#e5e9f0" font-size="13" font-weight="600">Generate test</text>
+    <text x="0"   y="370" text-anchor="middle" fill="#9aa3b2" font-size="11">+1.7% tokens</text>
+    <text x="0"   y="388" text-anchor="middle" fill="#7fd49a" font-size="11">↑ quality better</text>
+  </g>
+
+  <!-- X axis baseline -->
+  <line x1="80" y1="330" x2="700" y2="330" stroke="#3a4150" stroke-width="1.5"/>
+</svg>

@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="./assets/logo.svg" alt="AgentFlow MCP" width="460"/>
+<img src="./assets/logo.png" alt="AgentFlow MCP" width="640"/>
 
 <br/>
 
@@ -25,9 +25,9 @@ npx agentflow-mcp init
 
 <br/>
 
-<a href="https://star-history.com/#ayyagarisujanreddy123/AgentFlow&Date">
-  <img src="https://api.star-history.com/svg?repos=ayyagarisujanreddy123/AgentFlow&type=Date" alt="Star History" width="640"/>
-</a>
+<img src="./assets/benchmark.svg" alt="Tokens entering primary context — Opus 4.6 vs AgentFlow (3-task benchmark)" width="720"/>
+
+<sub><em>Measured on 2026-05-10 against <code>claude-opus-4-6</code>. Full per-task outputs in <a href="./COMPARISON.md">COMPARISON.md</a>.</em></sub>
 
 </div>
 
