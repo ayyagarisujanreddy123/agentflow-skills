@@ -1,4 +1,6 @@
 # AgentFlow MCP
+<img width="1440" height="800" alt="image" src="https://github.com/user-attachments/assets/37e11513-13da-40d7-a676-2e610042f575" />
+
 
 **Smart tools that cost less than thinking — MCP server for Claude Code.**
 
