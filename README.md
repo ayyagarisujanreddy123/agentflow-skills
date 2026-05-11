@@ -1,12 +1,41 @@
-# AgentFlow MCP
+<div align="center">
+
+<img src="./assets/logo.png" alt="AgentFlow MCP" width="640"/>
+
+<br/>
 
 **Smart tools that cost less than thinking — MCP server for Claude Code.**
+
+<br/>
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+[![Version](https://img.shields.io/badge/version-0.1.0-blue)](./package.json)
+[![Node](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen)](./package.json)
+[![Tests](https://img.shields.io/badge/tests-39%2F39%20passing-success)](./TESTING.md)
+[![Cost reduction](https://img.shields.io/badge/cost%20reduction-93.8%25-blueviolet)](./COMPARISON.md)
+[![Status](https://img.shields.io/badge/status-pre--release-orange)](#)
+
+<br/>
 
 ```bash
 npx agentflow-mcp init
 ```
 
-AgentFlow MCP gives Claude Code a set of tools backed by Haiku. When Claude Code needs to summarize a file, search a codebase, generate boilerplate, write tests, or review code, it calls an AgentFlow tool instead of doing the work in its own expensive context window. Each tool runs against a fresh, minimal context through Haiku — the primary model (Sonnet/Opus) never processes those tokens.
+<sub><a href="#install">Install</a> • <a href="#how-it-works">How It Works</a> • <a href="#tools">Tools</a> • <a href="#config">Config</a> • <a href="#quality-vs-cost--what-gets-routed-where">Benchmark</a> • <a href="./COMPARISON.md">Full Comparison</a> • <a href="./TESTING.md">Testing</a> • <a href="#license">License</a></sub>
+
+<br/>
+
+<img src="./assets/benchmark.svg" alt="Tokens entering primary context — Opus 4.6 vs AgentFlow (3-task benchmark)" width="720"/>
+
+<sub><em>Measured on 2026-05-10 against <code>claude-opus-4-6</code>. Full per-task outputs in <a href="./COMPARISON.md">COMPARISON.md</a>.</em></sub>
+
+</div>
+
+<br/>
+
+AgentFlow MCP gives Claude Code a set of tools backed by Haiku (and Sonnet, where reasoning matters). When Claude Code needs to summarize a file, search a codebase, generate boilerplate, write tests, or review code, it calls an AgentFlow tool instead of doing the work in its own expensive context window. Each tool runs against a fresh, minimal context — the primary model (Sonnet/Opus) never processes those tokens.
+
+> **Measured on a 3-task benchmark vs Opus 4.6 baseline: 93.8% cost reduction, 80.2% primary-context reduction, output correctness at parity.** See [COMPARISON.md](./COMPARISON.md).
 
 ---
 
