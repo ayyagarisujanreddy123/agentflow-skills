@@ -2,6 +2,7 @@
   "name": "agentflow-mcp",
   "version": "0.1.0",
   "description": "Smart tools that cost less than thinking — MCP server for Claude Code",
+  "type": "module",
   "bin": {
     "agentflow-mcp": "./bin/agentflow-mcp"
   },

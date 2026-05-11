@@ -35,7 +35,7 @@ export const reviewTool: ToolDef = {
     }
   },
   async handler(args, ctx) {
-    let code = typeof args?.code === "string" ? args.code : "";
+    let code: string = typeof args?.code === "string" ? args.code : "";
     const file_path = typeof args?.file_path === "string" ? args.file_path : "";
     const focus = ((args?.focus as string) ?? "all").toLowerCase();
     const focusPrompt = FOCUS_PROMPTS[focus] ?? FOCUS_PROMPTS.all;
