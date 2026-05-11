@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import "dotenv/config";
 import { Command } from "commander";
 import { runInit } from "./init.js";
 import { runUninstall } from "./uninstall.js";
