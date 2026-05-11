@@ -88,6 +88,14 @@ check("getModelForTool falls back to default_model",
   cmDefault.getModelForTool("agentflow_read") === "claude-haiku-4-5-20251001");
 check("unknown tool returns empty config object",
   JSON.stringify(cmDefault.getToolConfig("agentflow_unknown")) === "{}");
+check("default routing: agentflow_gen pinned to sonnet",
+  cmDefault.getModelForTool("agentflow_gen") === "claude-sonnet-4-6");
+check("default routing: agentflow_review pinned to sonnet",
+  cmDefault.getModelForTool("agentflow_review") === "claude-sonnet-4-6");
+check("default routing: agentflow_summarize stays on haiku",
+  cmDefault.getModelForTool("agentflow_summarize") === "claude-haiku-4-5-20251001");
+check("default routing: agentflow_search stays on haiku",
+  cmDefault.getModelForTool("agentflow_search") === "claude-haiku-4-5-20251001");
 
 // --- ConfigManager (real YAML override) ---
 const yamlPath = path.join(tmpDir, "config.yaml");

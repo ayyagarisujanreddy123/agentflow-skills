@@ -2,14 +2,18 @@ import * as fs from "fs";
 import { ToolDef, runCompletion } from "./types.js";
 import { resolveCwd, isBinaryBuffer } from "./fs-utils.js";
 
-const SYSTEM = `You are a code reading assistant. Given a file and a query, return only the parts of the file relevant to the query. Include line numbers.
+const SYSTEM = `You are a code reading assistant. Given a file and a query, return ONLY the parts of the file that are relevant to the query.
 
-Modes:
-- "summary": give a high-level overview of the file structure and purpose
-- "relevant": return only the matching code sections with surrounding context, prefixed by line numbers (format "  42  | code line")
-- "full": return the complete file contents with brief annotations
-
-Output the code/result only — no markdown fences, no preamble.`;
+STRICT RULES:
+1. NO preamble. NO "Here is...". NO "Looking at the file...". Start with the result.
+2. NO markdown fences around the output.
+3. If the query is a yes/no or factual question that can be answered directly from the code, lead with a 1-2 sentence answer, then cite the supporting line(s) using the format "  42  | code line".
+4. Otherwise, return ONLY the matching sections with minimal surrounding context (typically ±3 lines) using the line-number format above.
+5. Do NOT dump the entire file. Do NOT include unrelated code. If nothing matches, output exactly: NO_MATCH
+6. Mode behavior:
+   - "relevant" (default): only matching sections with line numbers
+   - "summary": high-level overview of file structure and purpose, no source quotes
+   - "full": complete file with brief inline annotations on relevant lines only`;
 
 export const readTool: ToolDef = {
   name: "agentflow_read",

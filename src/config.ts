@@ -34,8 +34,8 @@ export const DEFAULT_CONFIG: AgentFlowConfig = {
   tools: {
     agentflow_read:      { max_tokens: 2048, temperature: 0.2, max_file_size_kb: 500 },
     agentflow_search:    { max_tokens: 2048, temperature: 0.1, max_batch_files: 20, max_api_calls: 5 },
-    agentflow_gen:       { max_tokens: 4096, temperature: 0.4 },
-    agentflow_review:    { max_tokens: 2048, temperature: 0.2 },
+    agentflow_gen:       { model: "claude-sonnet-4-6", max_tokens: 4096, temperature: 0.4 },
+    agentflow_review:    { model: "claude-sonnet-4-6", max_tokens: 2048, temperature: 0.2 },
     agentflow_summarize: { max_tokens: 1024, temperature: 0.3 },
     agentflow_transform: { max_tokens: 2048, temperature: 0.2 },
     agentflow_ask:       { max_tokens: 2048, temperature: 0.5 }
@@ -59,6 +59,9 @@ comparison_model: claude-sonnet-4-6
 log_dir: ~/.agentflow/logs
 
 # Per-tool overrides
+# Default routing: extraction-style tools (read, search, summarize) → Haiku.
+# Generation/reasoning tools (gen, review) → Sonnet for correctness.
+# Override with \`model: ...\` per tool below.
 tools:
   agentflow_read:
     max_tokens: 2048
@@ -70,9 +73,11 @@ tools:
     max_batch_files: 20
     max_api_calls: 5
   agentflow_gen:
+    model: claude-sonnet-4-6
     max_tokens: 4096
     temperature: 0.4
   agentflow_review:
+    model: claude-sonnet-4-6
     max_tokens: 2048
     temperature: 0.2
   agentflow_summarize:
