@@ -10,13 +10,20 @@ const FOCUS_PROMPTS: Record<string, string> = {
 };
 
 const OUTPUT_RULES = `
-For each issue output exactly:
-SEVERITY: [CRITICAL|HIGH|MEDIUM|LOW]
-LINE: <number>
-ISSUE: <one sentence>
-FIX: <one sentence>
 
-Separate issues with a blank line. If no issues, output exactly: NO_ISSUES_FOUND`;
+STRICT OUTPUT RULES:
+1. NO preamble. NO "Here are the findings:". NO summary line. NO closing remarks.
+2. Start directly with the first SEVERITY: line, or with NO_ISSUES_FOUND.
+3. NO markdown fences, headers, or bullet characters.
+4. For each issue output exactly four lines, in this order:
+   SEVERITY: [CRITICAL|HIGH|MEDIUM|LOW]
+   LINE: <number>
+   ISSUE: <one sentence describing the problem>
+   FIX: <one sentence describing the fix>
+5. Separate issues with a single blank line.
+6. Cite an exact line number for every issue. If unsure, do not report it.
+7. Do not invent issues to look thorough. Be precise. Be terse.
+8. If no issues found, output exactly: NO_ISSUES_FOUND`;
 
 export const reviewTool: ToolDef = {
   name: "agentflow_review",
