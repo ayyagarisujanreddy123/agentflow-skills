@@ -41,21 +41,57 @@ AgentFlow MCP gives Claude Code a set of tools backed by Haiku (and Sonnet, wher
 
 ## Install
 
-```bash
-# One command — configures Claude Code automatically
-npx agentflow-mcp init
+### Requirements
 
-# Prompts for Anthropic API key (or uses ANTHROPIC_API_KEY env var)
-# Writes MCP server config to Claude Code
-# Creates ~/.agentflow/config.yaml with defaults
-# Done — tools available on next Claude Code session
+- Node.js >= 18
+- An Anthropic API key (`ANTHROPIC_API_KEY`) — billed to your account at Haiku/Sonnet rates
+- Claude Code installed (the MCP entry is written to its config)
+
+### Option A — install from npm (when published)
+
+```bash
+npx agentflow-mcp init
 ```
 
-Uninstall:
+The `init` command:
+1. Prompts for your Anthropic API key (or reads `ANTHROPIC_API_KEY`)
+2. Writes the MCP server entry to Claude Code's config (`~/.claude.json` or `~/Library/Application Support/Claude/claude_desktop_config.json` depending on platform)
+3. Creates `~/.agentflow/config.yaml` with sensible defaults
+4. Tools become available on the next Claude Code session
+
+### Option B — install from source (works today)
 
 ```bash
-npx agentflow-mcp uninstall          # remove MCP entry
-npx agentflow-mcp uninstall --purge   # also delete ~/.agentflow/
+git clone https://github.com/ayyagarisujanreddy123/AgentFlow.git
+cd AgentFlow
+npm install
+npm run build
+npm link                       # exposes `agentflow-mcp` globally
+agentflow-mcp init             # same flow as Option A
+```
+
+### Verify the install
+
+```bash
+# 1. Check the binary works
+agentflow-mcp --help
+
+# 2. Confirm Claude Code sees the server
+#    Open Claude Code → /mcp should list `agentflow` with 7 tools
+
+# 3. Check config + key resolution
+agentflow-mcp config
+
+# 4. Run smoke + unit tests against your local checkout
+node test/smoke.mjs
+node test/unit.mjs
+```
+
+### Uninstall
+
+```bash
+npx agentflow-mcp uninstall          # remove MCP entry from Claude Code
+npx agentflow-mcp uninstall --purge   # also delete ~/.agentflow/ (config + logs)
 ```
 
 ---
@@ -283,9 +319,33 @@ Every tool call is logged to `~/.agentflow/logs/YYYY-MM-DD.jsonl`:
 
 ---
 
+## Deploy / Publish (maintainers)
+
+Publishing a new version to npm so end users can `npx agentflow-mcp init`:
+
+```bash
+# 1. Bump version in package.json (semver)
+npm version patch    # or `minor` / `major`
+
+# 2. Build + verify
+npm run build
+node test/unit.mjs && node test/smoke.mjs
+
+# 3. Dry-run the publish to inspect the tarball
+npm publish --dry-run
+
+# 4. Publish (requires `npm login` once)
+npm publish --access public
+
+# 5. Push tag
+git push --follow-tags
+```
+
+The `files` field in `package.json` ships only `dist/` and `bin/` — source/tests/node_modules stay out of the tarball. `prepublishOnly` re-runs `tsc` automatically.
+
 ## Contributing
 
-Issues and PRs welcome. See [CONTRIBUTING.md](./CONTRIBUTING.md) if present.
+Issues and PRs welcome. See [CONTRIBUTING.md](./CONTRIBUTING.md).
 
 ## License
 
