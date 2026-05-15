@@ -39,27 +39,43 @@ AgentFlow MCP gives Claude Code a set of tools backed by Haiku (and Sonnet, wher
 
 ---
 
-## Install
+## Getting started
 
-### Requirements
+This is a step-by-step walkthrough from the perspective of someone installing AgentFlow for the first time.
 
-- Node.js >= 18
-- An Anthropic API key (`ANTHROPIC_API_KEY`) — billed to your account at Haiku/Sonnet rates
-- Claude Code installed (the MCP entry is written to its config)
+### 1. What you need
 
-### Option A — install from npm (when published)
+| Requirement | Why |
+|---|---|
+| **Node.js >= 18** | The MCP server runs on Node. Check with `node --version`. |
+| **Claude Code installed** | AgentFlow runs as a subprocess of Claude Code. Download at [claude.com/download](https://claude.com/download). |
+| **An Anthropic API key** | AgentFlow makes its own API calls to Haiku/Sonnet. Billed to your account at standard token rates. |
+| **A small API credit balance** | Pay-as-you-go usage. Most users spend under $1/day. Top up at [console.anthropic.com](https://console.anthropic.com). |
+
+> **Important — billing model:** AgentFlow does **not** use your Claude Code Pro/Max subscription. The subscription pays for Claude Code itself; AgentFlow makes separate API calls and bills your Anthropic API account. Both can use the same Anthropic account, but they're metered independently. Even subscription users need an API key for AgentFlow.
+
+### 2. Get an Anthropic API key
+
+1. Go to [console.anthropic.com](https://console.anthropic.com) and sign in (same account as Claude Code is fine).
+2. **Settings → API Keys → Create Key.** Name it `agentflow-mcp` so you can track usage.
+3. Copy the key — it looks like `sk-ant-api03-...`. Save it somewhere safe; you won't see it again.
+4. **Billing → Plans & Billing** → add at least $5 of credits if you haven't already. AgentFlow tool calls draw from this balance, not your Claude Code subscription.
+
+### 3. Install AgentFlow
+
+#### Option A — from npm (recommended once published)
 
 ```bash
-npx agentflow-mcp init
+# Export your key so init picks it up automatically
+export ANTHROPIC_API_KEY=sk-ant-api03-...
+
+# One-shot install: configures Claude Code + writes config file
+npx -y agentflow-mcp init
 ```
 
-The `init` command:
-1. Prompts for your Anthropic API key (or reads `ANTHROPIC_API_KEY`)
-2. Writes the MCP server entry to Claude Code's config (`~/.claude.json` or `~/Library/Application Support/Claude/claude_desktop_config.json` depending on platform)
-3. Creates `~/.agentflow/config.yaml` with sensible defaults
-4. Tools become available on the next Claude Code session
+That's it. `npx` downloads the package, runs `init`, and exits — nothing is installed globally. The MCP server itself is launched on demand by Claude Code.
 
-### Option B — install from source (works today)
+#### Option B — from source (for contributors or pre-publish testing)
 
 ```bash
 git clone https://github.com/ayyagarisujanreddy123/AgentFlow.git
@@ -67,36 +83,111 @@ cd AgentFlow
 npm install
 npm run build
 
-# Wire MCP entry to this clone (no npm publish needed).
-# Writes absolute paths to node + dist/cli/index.js into Claude Code's config.
+export ANTHROPIC_API_KEY=sk-ant-api03-...
 node dist/cli/index.js init --from-source
 ```
 
-`--from-source` is the right choice when you've cloned the repo and want Claude Code to spawn *your* local build. If you'd rather expose the binary on `$PATH`, run `npm link` first, then `agentflow-mcp init --from-source`.
+`--from-source` points Claude Code at your local `dist/` build instead of fetching from npm.
 
-### Verify the install
+### 4. What `init` actually did
 
-```bash
-# 1. Check the binary works
-agentflow-mcp --help
+`init` is non-destructive and writes only two files:
 
-# 2. Confirm Claude Code sees the server
-#    Open Claude Code → /mcp should list `agentflow` with 7 tools
-
-# 3. Check config + key resolution
-agentflow-mcp config
-
-# 4. Run smoke + unit tests against your local checkout
-node test/smoke.mjs
-node test/unit.mjs
+```
+~/.claude.json                 ← added "mcpServers.agentflow" entry
+~/.agentflow/config.yaml       ← created with your key + default routing
 ```
 
-### Uninstall
+You can preview without writing:
 
 ```bash
-npx agentflow-mcp uninstall          # remove MCP entry from Claude Code
-npx agentflow-mcp uninstall --purge   # also delete ~/.agentflow/ (config + logs)
+npx -y agentflow-mcp init --dry-run
 ```
+
+If your key wasn't in the environment, `init` will leave a placeholder. Edit `~/.agentflow/config.yaml` and paste your key:
+
+```yaml
+api_key: sk-ant-api03-...    # or leave as ${ANTHROPIC_API_KEY} and export it
+```
+
+### 5. Where AgentFlow looks for your API key
+
+In order of precedence (first match wins):
+
+1. **`api_key:` in `~/.agentflow/config.yaml`** — set automatically by `init` if `ANTHROPIC_API_KEY` was exported.
+2. **`env` block in `~/.claude.json` under `mcpServers.agentflow`** — Claude Code injects this when spawning AgentFlow. Useful if you don't want the key on disk in `config.yaml`.
+3. **`ANTHROPIC_API_KEY` env var** — inherited from the shell that launched Claude Code.
+4. **`.env` file** in the project where Claude Code is running — loaded via `dotenv` at startup (works per-project only).
+
+You only need **one** of these set. The Claude Code subscription login does not propagate to AgentFlow — they're separate auth channels even when using the same Anthropic account.
+
+### 6. Restart Claude Code and verify
+
+Quit Claude Code completely and reopen it (MCP servers are loaded at session start). Then in the prompt:
+
+```
+/mcp
+```
+
+You should see `agentflow` listed as connected with **7 tools**:
+
+- `agentflow_read`
+- `agentflow_search`
+- `agentflow_gen`
+- `agentflow_review`
+- `agentflow_summarize`
+- `agentflow_transform`
+- `agentflow_ask`
+
+If you see "0 servers connected", the MCP entry may not have been written. Check:
+
+```bash
+cat ~/.claude.json | grep -A 5 agentflow
+agentflow-mcp config         # prints loaded config + resolved key (masked)
+```
+
+### 7. Using AgentFlow
+
+You don't need to call the tools by name — Claude Code decides when to use them. Examples:
+
+| What you say to Claude Code | What happens |
+|---|---|
+| "Summarize this log file" | Claude Code calls `agentflow_summarize`, gets the summary back, never reads the raw log into its own context. |
+| "Find where `processPayment` is called" | Calls `agentflow_search`, gets file:line results. |
+| "Write a unit test for `parseConfig`" | Calls `agentflow_gen` (routed to Sonnet for code correctness). |
+| "Review my last commit for bugs" | Calls `agentflow_review` (Sonnet). |
+| "Convert this JSON to CSV" | Calls `agentflow_transform`. |
+| "Read this 2000-line file and tell me what `handleAuth` does" | Calls `agentflow_read` — Haiku scans the file, returns just the relevant section. |
+
+You can also invoke them explicitly: *"use agentflow_summarize on docs/spec.md"*.
+
+### 8. Watch your spend
+
+```bash
+npx agentflow-mcp stats              # today's usage
+npx agentflow-mcp stats --week       # last 7 days
+npx agentflow-mcp stats --month      # last 30 days
+npx agentflow-mcp stats --all        # lifetime
+```
+
+Every tool call is recorded in `~/.agentflow/logs/YYYY-MM-DD.jsonl`. The ledger tracks actual cost paid plus the equivalent Sonnet cost AgentFlow saved you — so you can see the savings, not just the spend.
+
+### 9. Uninstall
+
+```bash
+npx agentflow-mcp uninstall          # remove the MCP entry from Claude Code
+npx agentflow-mcp uninstall --purge  # also delete ~/.agentflow/ (config + ledger logs)
+```
+
+### Troubleshooting
+
+| Symptom | Likely cause | Fix |
+|---|---|---|
+| `/mcp` shows 0 servers | Claude Code not restarted after `init`, or config not written | Quit and reopen Claude Code. Verify `~/.claude.json` has the `agentflow` entry. |
+| Tools list but every call errors with `invalid_api_key` | Key missing or wrong in config | `agentflow-mcp config` to inspect. Re-export `ANTHROPIC_API_KEY` and rerun `init`, or edit `~/.agentflow/config.yaml` directly. |
+| Tools error with `insufficient_quota` | No credits on Anthropic account | Add credits at [console.anthropic.com](https://console.anthropic.com) → Billing. |
+| `npx agentflow-mcp` says "command not found" | Old npm cache | `npx clear-npx-cache && npx -y agentflow-mcp init`. |
+| Want to use a different key per project | Per-project `.env` | Drop `ANTHROPIC_API_KEY=sk-...` into the project's `.env`. AgentFlow loads it when Claude Code spawns the server from that directory. |
 
 ---
 
