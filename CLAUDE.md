@@ -20,13 +20,13 @@ TypeScript is strict, ES2022 + Node16 modules. Sources live in `src/` and `cli/`
 ## Tests
 
 ```bash
-node test/unit.mjs          # 24 tests, no network — ConfigManager, TokenLedger, pricing
+node test/unit.mjs          # 28 tests, no network — ConfigManager, TokenLedger, pricing
 node test/smoke.mjs         # 7 tests, MCP stdio handshake with fake API key, no real calls
 node test/integration.mjs   # 4 tests, ~$0.005 of real Anthropic spend, needs ANTHROPIC_API_KEY
 node test/comparison.mjs    # ~$0.10 benchmark vs Opus baseline, used to produce COMPARISON.md numbers
 ```
 
-Tests load `.env` via `dotenv/config` (CLI entrypoint does this too). To run a single test, edit the relevant `test/*.mjs` — there is no test framework; each file is a hand-rolled runner that asserts + prints pass/fail. Integration and comparison tests write real ledger lines to `~/.agentflow/logs/`.
+Tests load `.env` via `dotenv/config` (CLI entrypoint does this too). Each `test/*.mjs` is one suite — no per-test isolation; comment out the relevant `check()` calls to skip. Integration and comparison tests write real ledger lines to `~/.agentflow/logs/`.
 
 ## Architecture
 
@@ -47,9 +47,13 @@ Request flow (`src/server.ts`):
 
 `cli/index.ts` is the commander entrypoint. The MCP runtime is just one subcommand (`serve`) — the others (`init`, `uninstall`, `stats`, `config`) are user-facing setup/diagnostics. `cli/init.ts` mutates `~/.claude.json` to add `mcpServers.agentflow` and writes `~/.agentflow/config.yaml`; treat that file as user state and always offer `--dry-run` parity for new behaviors.
 
+`init --from-source` points `mcpServers.agentflow` at the local `dist/cli/index.js` instead of `npx -y agentflow-mcp` — used when iterating against an unpublished build. `bin/agentflow-mcp` is a 2-line ESM stub (`import("../dist/cli/index.js")`); never put logic there.
+
 ## Conventions
 
 - ESM only (`"type": "module"`); imports inside `src/` and `cli/` must use `.js` extensions (Node16 resolution), even though the sources are `.ts`.
 - `.env` is gitignored; `.env.example` is the template. Never commit a real key.
 - Pricing lives in `src/pricing.ts` and is overridable via `pricing:` in `config.yaml`. When Anthropic changes rates, update both.
 - Model IDs are pinned strings (e.g. `claude-haiku-4-5-20251001`, `claude-sonnet-4-6`). Don't hardcode them in tool handlers — read from config.
+- `INTERNAL.md` is gitignored — engineering scratch, never shipped or referenced from user docs.
+- `assets/` (`logo.png`, `benchmark.svg`) is repo-only for README rendering; not in the npm package (`files:` allowlist is `dist/` + `bin/`).
