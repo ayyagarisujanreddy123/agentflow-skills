@@ -66,9 +66,13 @@ git clone https://github.com/ayyagarisujanreddy123/AgentFlow.git
 cd AgentFlow
 npm install
 npm run build
-npm link                       # exposes `agentflow-mcp` globally
-agentflow-mcp init             # same flow as Option A
+
+# Wire MCP entry to this clone (no npm publish needed).
+# Writes absolute paths to node + dist/cli/index.js into Claude Code's config.
+node dist/cli/index.js init --from-source
 ```
+
+`--from-source` is the right choice when you've cloned the repo and want Claude Code to spawn *your* local build. If you'd rather expose the binary on `$PATH`, run `npm link` first, then `agentflow-mcp init --from-source`.
 
 ### Verify the install
 

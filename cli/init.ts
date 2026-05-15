@@ -2,6 +2,7 @@ import * as fs from "fs";
 import * as path from "path";
 import * as os from "os";
 import * as readline from "readline";
+import { fileURLToPath } from "url";
 import chalk from "chalk";
 import {
   DEFAULT_CONFIG_DIR,
@@ -15,10 +16,17 @@ const CLAUDE_CONFIG_CANDIDATES = [
   path.join(os.homedir(), ".config", "claude", "claude_code_config.json")
 ];
 
-const MCP_ENTRY = {
+const NPM_MCP_ENTRY = {
   command: "npx",
   args: ["-y", "agentflow-mcp", "serve"]
 };
+
+function fromSourceMcpEntry(): { command: string; args: string[] } {
+  // dist/cli/init.js → dist/cli/index.js (sibling)
+  const here = path.dirname(fileURLToPath(import.meta.url));
+  const entry = path.resolve(here, "index.js");
+  return { command: process.execPath, args: [entry, "serve"] };
+}
 
 function findClaudeConfigPath(): string {
   for (const p of CLAUDE_CONFIG_CANDIDATES) {
@@ -42,19 +50,24 @@ async function promptApiKey(): Promise<string> {
   });
 }
 
-function mergeMcpConfig(existing: any, dryRun: boolean): { result: any; changed: boolean } {
+function mergeMcpConfig(existing: any, entry: { command: string; args: string[] }): { result: any; changed: boolean } {
   const cfg = existing && typeof existing === "object" ? { ...existing } : {};
   const servers = (cfg.mcpServers && typeof cfg.mcpServers === "object") ? { ...cfg.mcpServers } : {};
   const before = JSON.stringify(servers.agentflow ?? null);
-  servers.agentflow = MCP_ENTRY;
+  servers.agentflow = entry;
   const after = JSON.stringify(servers.agentflow);
   cfg.mcpServers = servers;
   return { result: cfg, changed: before !== after };
 }
 
-export async function runInit(opts: { dryRun?: boolean }): Promise<void> {
+export async function runInit(opts: { dryRun?: boolean; fromSource?: boolean }): Promise<void> {
   const dryRun = !!opts.dryRun;
+  const fromSource = !!opts.fromSource;
+  const mcpEntry = fromSource ? fromSourceMcpEntry() : NPM_MCP_ENTRY;
   console.log(chalk.bold("\nAgentFlow MCP — init\n"));
+  if (fromSource) {
+    console.log(chalk.cyan("ℹ") + ` from-source mode: MCP entry will run \`${mcpEntry.command} ${mcpEntry.args.join(" ")}\``);
+  }
 
   const apiKey = await promptApiKey();
   const configDir = DEFAULT_CONFIG_DIR;
@@ -86,7 +99,7 @@ export async function runInit(opts: { dryRun?: boolean }): Promise<void> {
     try { existing = JSON.parse(fs.readFileSync(claudePath, "utf8")); }
     catch { existing = {}; }
   }
-  const { result, changed } = mergeMcpConfig(existing, dryRun);
+  const { result, changed } = mergeMcpConfig(existing, mcpEntry);
 
   if (dryRun) {
     console.log(`[dry] would update ${claudePath}:`);

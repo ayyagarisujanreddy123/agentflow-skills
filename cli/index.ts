@@ -18,7 +18,8 @@ program
   .command("init")
   .description("Configure Claude Code and create ~/.agentflow/config.yaml")
   .option("--dry-run", "preview changes without writing files")
-  .action(async (opts) => { await runInit({ dryRun: !!opts.dryRun }); });
+  .option("--from-source", "wire MCP entry to local clone (no npm publish needed)")
+  .action(async (opts) => { await runInit({ dryRun: !!opts.dryRun, fromSource: !!opts.fromSource }); });
 
 program
   .command("uninstall")
