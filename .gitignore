@@ -5,3 +5,6 @@ dist/
 .env
 .env.local
 *.tgz
+
+# Internal engineering notes — not shipped to npm or GitHub
+INTERNAL.md
