@@ -4,7 +4,7 @@
   "description": "Smart tools that cost less than thinking — MCP server for Claude Code",
   "type": "module",
   "bin": {
-    "agentflow-mcp": "./bin/agentflow-mcp"
+    "agentflow-mcp": "bin/agentflow-mcp"
   },
   "main": "./dist/src/server.js",
   "scripts": {
@@ -44,6 +44,6 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ayyagarisujanreddy123/AgentFlow"
+    "url": "git+https://github.com/ayyagarisujanreddy123/AgentFlow.git"
   }
 }
