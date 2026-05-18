@@ -13,7 +13,7 @@
 [![Node](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen)](./package.json)
 [![Tests](https://img.shields.io/badge/tests-39%2F39%20passing-success)](./TESTING.md)
 [![Cost reduction](https://img.shields.io/badge/cost%20reduction-93.8%25-blueviolet)](./COMPARISON.md)
-[![Status](https://img.shields.io/badge/status-pre--release-orange)](#)
+[![npm](https://img.shields.io/npm/v/agentflow-mcp.svg)](https://www.npmjs.com/package/agentflow-mcp)
 
 <br/>
 
@@ -63,7 +63,7 @@ This is a step-by-step walkthrough from the perspective of someone installing Ag
 
 ### 3. Install AgentFlow
 
-#### Option A — from npm (recommended once published)
+#### Option A — from npm (recommended)
 
 ```bash
 # Export your key so init picks it up automatically
@@ -75,7 +75,7 @@ npx -y agentflow-mcp init
 
 That's it. `npx` downloads the package, runs `init`, and exits — nothing is installed globally. The MCP server itself is launched on demand by Claude Code.
 
-#### Option B — from source (for contributors or pre-publish testing)
+#### Option B — from source (for contributors)
 
 ```bash
 git clone https://github.com/ayyagarisujanreddy123/AgentFlow.git
@@ -429,7 +429,10 @@ node test/unit.mjs && node test/smoke.mjs
 # 3. Dry-run the publish to inspect the tarball
 npm publish --dry-run
 
-# 4. Publish (requires `npm login` once)
+# 4. Publish (requires `npm login` once, plus 2FA OTP — or a
+#    granular access token with "Bypass 2FA when publishing"
+#    if you use security-key 2FA, since security keys can't
+#    produce a 6-digit OTP)
 npm publish --access public
 
 # 5. Push tag
