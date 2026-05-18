@@ -6,7 +6,7 @@
   "bin": {
     "agentflow-mcp": "./bin/agentflow-mcp"
   },
-  "main": "./dist/server.js",
+  "main": "./dist/src/server.js",
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
