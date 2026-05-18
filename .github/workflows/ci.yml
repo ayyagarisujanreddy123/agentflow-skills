@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Build and test (Node ${{ matrix.node }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: ["18", "20", "22"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Unit tests
+        run: node test/unit.mjs
+
+      - name: Smoke tests (MCP stdio handshake, no real API calls)
+        run: node test/smoke.mjs
+        env:
+          ANTHROPIC_API_KEY: sk-ant-fake-key-for-smoke-tests
+
+      - name: Verify package contents
+        run: npm pack --dry-run
