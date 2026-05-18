@@ -1,6 +1,7 @@
 {
   "name": "agentflow-mcp",
-  "version": "0.1.0",
+  "version": "0.1.1",
+  "mcpName": "io.github.ayyagarisujanreddy123/agentflow-mcp",
   "description": "Smart tools that cost less than thinking — MCP server for Claude Code",
   "type": "module",
   "bin": {
