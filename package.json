@@ -1,0 +1,35 @@
+{
+  "name": "agentflow",
+  "version": "0.1.0",
+  "description": "One-command installer for AgentFlow — native Claude Code Skills that offload grunt work (read, search, gen, review, summarize, transform) to disposable, model-pinned subagents. No API key.",
+  "type": "module",
+  "bin": {
+    "agentflow": "bin/agentflow.js"
+  },
+  "scripts": {
+    "test": "node test/skills.mjs && node test/installer.mjs"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "files": [
+    "bin/",
+    "skills/",
+    "agents/"
+  ],
+  "keywords": [
+    "claude-code",
+    "claude",
+    "skills",
+    "subagents",
+    "anthropic",
+    "ai-tools",
+    "context-management"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ayyagarisujanreddy123/agentflow-skills.git"
+  },
+  "homepage": "https://github.com/ayyagarisujanreddy123/agentflow-skills#readme"
+}

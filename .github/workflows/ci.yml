@@ -21,6 +21,9 @@ jobs:
       - name: Validate skills + worker structure
         run: node test/skills.mjs
 
+      - name: Installer tests (copies into a temp dir)
+        run: node test/installer.mjs
+
   legacy-mcp:
     name: Legacy MCP build and test (Node ${{ matrix.node }})
     runs-on: ubuntu-latest

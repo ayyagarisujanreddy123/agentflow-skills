@@ -16,10 +16,8 @@
 <br/>
 
 ```bash
-# Install = drop a folder. No key, no billing, no server process.
-git clone https://github.com/ayyagarisujanreddy123/agentflow-skills.git
-cp -r agentflow-skills/skills/*  ~/.claude/skills/
-cp -r agentflow-skills/agents/*  ~/.claude/agents/
+# One command. No key, no billing, no server process.
+npx agentflow install
 ```
 
 <sub><a href="#install">Install</a> • <a href="#how-it-works">How It Works</a> • <a href="#the-skills">Skills</a> • <a href="#whats-different-from-the-mcp-version">vs MCP</a> • <a href="#legacy-the-mcp-server">Legacy MCP</a> • <a href="#license">License</a></sub>
@@ -73,10 +71,28 @@ there's a real cost benefit too. But it's a bonus now, not the pitch.
 
 ## Install
 
-AgentFlow ships two folders: `skills/` (the seven skills) and `agents/` (the two
-worker subagents the skills dispatch to). Drop both into Claude Code's config dir.
+AgentFlow ships seven skills (`skills/`) and two worker subagents (`agents/`).
+The installer copies both into Claude Code's config dir.
 
-### User-level (available in every project)
+### Recommended — one command
+
+```bash
+npx agentflow install              # user-level: ~/.claude/  (every project)
+npx agentflow install --project    # project-level: ./.claude/  (this repo only)
+```
+
+Other commands:
+
+```bash
+npx agentflow install --dry-run    # show what would change, write nothing
+npx agentflow install --force      # overwrite existing skills/agents
+npx agentflow uninstall            # remove only AgentFlow's skills/agents
+npx agentflow list                 # list bundled skills + workers
+```
+
+### Manual — copy the folders
+
+If you'd rather not use npm, clone and copy:
 
 ```bash
 git clone https://github.com/ayyagarisujanreddy123/agentflow-skills.git
@@ -85,19 +101,12 @@ cp -r agentflow-skills/skills/*  ~/.claude/skills/
 cp -r agentflow-skills/agents/*  ~/.claude/agents/
 ```
 
-### Project-level (only in one repo)
-
-```bash
-mkdir -p .claude/skills .claude/agents
-cp -r /path/to/agentflow-skills/skills/*  .claude/skills/
-cp -r /path/to/agentflow-skills/agents/*  .claude/agents/
-```
-
 That's the whole install. No key, no `init`, no restart-and-pray. Skills are
 discovered by their `description` and fire when Claude Code judges them relevant
 (or when you name one explicitly).
 
-> **Requirement:** Claude Code. Nothing else — no Node, no API key, no credits.
+> **Requirement:** Claude Code. The `npx` installer also needs Node.js >= 18; the
+> manual copy needs nothing but `git`. No API key, no credits either way.
 
 ---
 
