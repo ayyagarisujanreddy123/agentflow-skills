@@ -124,7 +124,7 @@ You don't call them by name — Claude Code decides. Examples:
 | "What does `handleAuth` do in this 2k-line file?" | `agentflow-read` |
 | "Convert this JSON to CSV" | `agentflow-transform` |
 
-You can also invoke one explicitly: *"use agentflow-review on src/server.ts"*.
+You can also invoke one explicitly: *"use agentflow-review on src/auth.ts"*.
 
 ---
 

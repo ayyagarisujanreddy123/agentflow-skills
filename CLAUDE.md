@@ -62,5 +62,5 @@ The legacy architecture (ConfigManager hot-reload, AnthropicClient, `allTools` r
 - Legacy MCP is ESM-only TypeScript (`"type": "module"`, Node16 resolution, `.js` import extensions). Strict, ES2022. Don't hardcode model IDs in handlers — read from config.
 - `.env` / `.env.example` and pricing live under `legacy/mcp/`. Never commit a real key.
 - `INTERNAL.md` is gitignored — engineering scratch, never shipped or referenced from user docs.
-- `assets/` (`logo.png`, `benchmark.svg`) is repo-only for README rendering.
+- `assets/` (`logo.png`) is repo-only for README rendering. The old cost-benchmark graphic was removed in the Skills pivot.
 - When you change a methodology prompt in a `SKILL.md`, check whether the matching legacy MCP `SYSTEM` constant in `legacy/mcp/src/tools/` should change too — they were intentionally identical at the pivot.
