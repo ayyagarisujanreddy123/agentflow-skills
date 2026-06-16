@@ -1,6 +1,7 @@
+
 <div align="center">
 
-<img src="./assets/logo.png" alt="AgentFlow" width="640"/>
+<img width="2720" height="1280" alt="agentflow_skills_claude_themed_banner (1)" src="https://github.com/user-attachments/assets/5880ae00-9218-475c-94b8-51d62123b985" />
 
 <br/>
 
