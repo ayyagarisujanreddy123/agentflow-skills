@@ -98,9 +98,9 @@ function help() {
   console.log(`agentflow — install AgentFlow Skills into Claude Code
 
 Usage:
-  npx agentflow install [--project] [--dry-run] [--force]
-  npx agentflow uninstall [--project] [--dry-run]
-  npx agentflow list
+  npx agentflow-skills install [--project] [--dry-run] [--force]
+  npx agentflow-skills uninstall [--project] [--dry-run]
+  npx agentflow-skills list
 
 Targets:
   (default)    ~/.claude/        available in every project

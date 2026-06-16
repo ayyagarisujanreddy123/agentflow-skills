@@ -10,7 +10,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the
 - **Pivoted from an MCP server to native Claude Code Skills.** The primary distribution is now seven skills under `skills/` plus two model-pinned worker subagents under `agents/`, installed by copying the folders into `~/.claude/` — no Anthropic API key, no billing, no server process. Each skill dispatches a disposable worker subagent (Haiku for extraction: read/search/summarize/transform/ask; Sonnet for correctness: gen/review) that runs in an isolated context and returns only the result, preserving the MCP version's context-isolation benefit. The tool methodology prompts carry over verbatim from the MCP `SYSTEM` constants.
 
 ### Added
-- **`agentflow` npm package** — a zero-dependency installer. `npx agentflow install` copies the skills + worker agents into `~/.claude/` (`--project` for `./.claude/`); also `uninstall`, `list`, `--dry-run`, `--force`. Claims the clean `agentflow` name (the legacy server keeps `agentflow-mcp`).
+- **`agentflow-skills` npm package** — a zero-dependency installer. `npx agentflow-skills install` copies the skills + worker agents into `~/.claude/` (`--project` for `./.claude/`); also `uninstall`, `list`, `--dry-run`, `--force`. (The unscoped name `agentflow` was rejected by npm as too similar to an existing `agent-flow`; the legacy server keeps `agentflow-mcp`.)
 - `test/skills.mjs` — 62 no-network structure checks (skill frontmatter, worker wiring, model pins).
 - `test/installer.mjs` — 11 checks driving the installer into a temp dir (copy / skip / force / uninstall / dry-run).
 - CI split into a `skills` job (root, runs both no-network suites) and a `legacy-mcp` job (runs in `legacy/mcp/`).

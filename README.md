@@ -17,7 +17,7 @@
 
 ```bash
 # One command. No key, no billing, no server process.
-npx agentflow install
+npx agentflow-skills install
 ```
 
 <sub><a href="#install">Install</a> • <a href="#how-it-works">How It Works</a> • <a href="#the-skills">Skills</a> • <a href="#whats-different-from-the-mcp-version">vs MCP</a> • <a href="#legacy-the-mcp-server">Legacy MCP</a> • <a href="#license">License</a></sub>
@@ -60,8 +60,8 @@ Three things these skills do well — capability first, cost second:
    won't give you unprompted.
 
 3. **Zero setup, fully native.** No API key, no billing account, no server
-   process, no `npx`. Copy a folder into `~/.claude/` and the skills are live in
-   any session.
+   process. One command (`npx agentflow-skills install`) or a folder copy into
+   `~/.claude/`, and the skills are live in any session.
 
 **Honest about the cost angle:** the model-pinned workers default to Haiku for
 extraction work, which is cheaper per token than your primary Opus turns — so
@@ -77,17 +77,17 @@ The installer copies both into Claude Code's config dir.
 ### Recommended — one command
 
 ```bash
-npx agentflow install              # user-level: ~/.claude/  (every project)
-npx agentflow install --project    # project-level: ./.claude/  (this repo only)
+npx agentflow-skills install              # user-level: ~/.claude/  (every project)
+npx agentflow-skills install --project    # project-level: ./.claude/  (this repo only)
 ```
 
 Other commands:
 
 ```bash
-npx agentflow install --dry-run    # show what would change, write nothing
-npx agentflow install --force      # overwrite existing skills/agents
-npx agentflow uninstall            # remove only AgentFlow's skills/agents
-npx agentflow list                 # list bundled skills + workers
+npx agentflow-skills install --dry-run    # show what would change, write nothing
+npx agentflow-skills install --force      # overwrite existing skills/agents
+npx agentflow-skills uninstall            # remove only AgentFlow's skills/agents
+npx agentflow-skills list                 # list bundled skills + workers
 ```
 
 ### Manual — copy the folders
