@@ -17,9 +17,9 @@
 
 ```bash
 # Install = drop a folder. No key, no billing, no server process.
-git clone https://github.com/ayyagarisujanreddy123/AgentFlow.git
-cp -r AgentFlow/skills/*  ~/.claude/skills/
-cp -r AgentFlow/agents/*  ~/.claude/agents/
+git clone https://github.com/ayyagarisujanreddy123/agentflow-skills.git
+cp -r agentflow-skills/skills/*  ~/.claude/skills/
+cp -r agentflow-skills/agents/*  ~/.claude/agents/
 ```
 
 <sub><a href="#install">Install</a> • <a href="#how-it-works">How It Works</a> • <a href="#the-skills">Skills</a> • <a href="#whats-different-from-the-mcp-version">vs MCP</a> • <a href="#legacy-the-mcp-server">Legacy MCP</a> • <a href="#license">License</a></sub>
@@ -79,18 +79,18 @@ worker subagents the skills dispatch to). Drop both into Claude Code's config di
 ### User-level (available in every project)
 
 ```bash
-git clone https://github.com/ayyagarisujanreddy123/AgentFlow.git
+git clone https://github.com/ayyagarisujanreddy123/agentflow-skills.git
 mkdir -p ~/.claude/skills ~/.claude/agents
-cp -r AgentFlow/skills/*  ~/.claude/skills/
-cp -r AgentFlow/agents/*  ~/.claude/agents/
+cp -r agentflow-skills/skills/*  ~/.claude/skills/
+cp -r agentflow-skills/agents/*  ~/.claude/agents/
 ```
 
 ### Project-level (only in one repo)
 
 ```bash
 mkdir -p .claude/skills .claude/agents
-cp -r /path/to/AgentFlow/skills/*  .claude/skills/
-cp -r /path/to/AgentFlow/agents/*  .claude/agents/
+cp -r /path/to/agentflow-skills/skills/*  .claude/skills/
+cp -r /path/to/agentflow-skills/agents/*  .claude/agents/
 ```
 
 That's the whole install. No key, no `init`, no restart-and-pray. Skills are

@@ -63,6 +63,6 @@ First public release on npm.
   - 80.2% primary-context token reduction
   - Output correctness at parity
 
-[Unreleased]: https://github.com/ayyagarisujanreddy123/AgentFlow/compare/v0.1.1...HEAD
-[0.1.1]: https://github.com/ayyagarisujanreddy123/AgentFlow/compare/v0.1.0...v0.1.1
-[0.1.0]: https://github.com/ayyagarisujanreddy123/AgentFlow/releases/tag/v0.1.0
+[Unreleased]: https://github.com/ayyagarisujanreddy123/agentflow-skills/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/ayyagarisujanreddy123/agentflow-skills/compare/v0.1.0...v0.1.1
+[0.1.0]: https://github.com/ayyagarisujanreddy123/agentflow-skills/releases/tag/v0.1.0

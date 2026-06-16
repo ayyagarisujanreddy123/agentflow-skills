@@ -12,7 +12,7 @@ Open a PR against `main` with a clear title (Conventional Commits-style preferre
 ## TL;DR
 
 ```bash
-git clone https://github.com/ayyagarisujanreddy123/AgentFlow.git
+git clone https://github.com/ayyagarisujanreddy123/agentflow-skills.git
 cd AgentFlow
 
 # Skills work — no build needed:

@@ -2,7 +2,7 @@
 
 > **Heads up:** AgentFlow has pivoted to native **Claude Code Skills** — no API
 > key, no billing, no server process. If you're starting fresh, use the Skills
-> version: **https://github.com/ayyagarisujanreddy123/AgentFlow**
+> version: **https://github.com/ayyagarisujanreddy123/agentflow-skills**
 >
 > This npm package is the original **MCP server**. It still works and is
 > maintained for existing users, but it is now the *legacy* path. The Skills
