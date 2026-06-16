@@ -8,6 +8,7 @@
 
 <br/>
 
+[![npm](https://img.shields.io/npm/v/agentflow-skills?label=agentflow-skills&color=cb3837&logo=npm)](https://www.npmjs.com/package/agentflow-skills)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 [![Skills](https://img.shields.io/badge/Claude%20Code-Skills-blue)](#install)
 [![Setup](https://img.shields.io/badge/setup-zero%20config-success)](#install)
