@@ -19,6 +19,17 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the
 ### Removed (Skills version only; MCP retains them)
 - No per-call token ledger / `stats` reporting — Claude Code does not expose per-subagent token accounting. The measured "93.8% cost reduction" headline does not carry over; Haiku workers are still cheaper than primary Opus turns, but no single figure is quoted.
 
+## [0.1.2] — 2026-06-16
+
+First npm release after the Skills pivot. The `agentflow-mcp` package is unchanged in behavior — it is now the **legacy** path; new users should use the Skills version. (npm previously had `0.1.0` only; `0.1.1` was tagged but never published, so this release rolls up its changes.)
+
+### Added
+- Package-level `README.md` in `legacy/mcp/` so the npm listing renders, leading with a notice that AgentFlow has pivoted to Claude Code Skills.
+
+### Changed
+- `package.json` `description` reworded to mark the package as the legacy MCP server, superseded by AgentFlow Skills.
+- Includes the unpublished `0.1.1` changes: `@anthropic-ai/sdk` `^0.40.0` → `^0.96.0` and the `mcpName` field.
+
 ## [0.1.1] — 2026-05-18
 
 ### Changed

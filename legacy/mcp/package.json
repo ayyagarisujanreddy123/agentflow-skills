@@ -1,8 +1,8 @@
 {
   "name": "agentflow-mcp",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "mcpName": "io.github.ayyagarisujanreddy123/agentflow-mcp",
-  "description": "Smart tools that cost less than thinking — MCP server for Claude Code",
+  "description": "Legacy MCP server for Claude Code (superseded by AgentFlow Skills) — routes tool work to Haiku/Sonnet to keep the primary context clean",
   "type": "module",
   "bin": {
     "agentflow-mcp": "bin/agentflow-mcp"
