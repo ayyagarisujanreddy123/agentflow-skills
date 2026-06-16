@@ -6,6 +6,19 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the
 
 ## [Unreleased]
 
+### Changed
+- **Pivoted from an MCP server to native Claude Code Skills.** The primary distribution is now seven skills under `skills/` plus two model-pinned worker subagents under `agents/`, installed by copying the folders into `~/.claude/` — no Anthropic API key, no billing, no server process. Each skill dispatches a disposable worker subagent (Haiku for extraction: read/search/summarize/transform/ask; Sonnet for correctness: gen/review) that runs in an isolated context and returns only the result, preserving the MCP version's context-isolation benefit. The tool methodology prompts carry over verbatim from the MCP `SYSTEM` constants.
+
+### Added
+- `test/skills.mjs` — 62 no-network structure checks (skill frontmatter, worker wiring, model pins).
+- CI split into a `skills` job (root) and a `legacy-mcp` job (runs in `legacy/mcp/`).
+
+### Archived
+- The entire MCP server (`agentflow-mcp` npm package: `src/`, `cli/`, `bin/`, tests, manifests, COMPARISON/TESTING docs) moved to `legacy/mcp/`, unchanged and still installable. See `legacy/mcp/ARCHIVED.md`. Build/run/test commands for it now run from that directory.
+
+### Removed (Skills version only; MCP retains them)
+- No per-call token ledger / `stats` reporting — Claude Code does not expose per-subagent token accounting. The measured "93.8% cost reduction" headline does not carry over; Haiku workers are still cheaper than primary Opus turns, but no single figure is quoted.
+
 ## [0.1.1] — 2026-05-18
 
 ### Changed

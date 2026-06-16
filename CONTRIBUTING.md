@@ -1,6 +1,11 @@
-# Contributing to AgentFlow MCP
+# Contributing to AgentFlow
 
-Thanks for your interest in improving AgentFlow MCP. This document explains how to set up a dev environment, the layout of the code, what to test, and how to send a PR that's likely to merge fast.
+Thanks for your interest in improving AgentFlow. There are **two codebases** here, and how you contribute depends on which one you're touching:
+
+- **Skills (primary)** — native Claude Code Skills under `skills/` and worker subagents under `agents/`. Plain markdown, no build, no API key.
+- **Legacy MCP server** — the archived `agentflow-mcp` npm package under `legacy/mcp/`. TypeScript, still maintained for existing users.
+
+Open a PR against `main` with a clear title (Conventional Commits-style preferred), tests for new behavior, and no unrelated changes.
 
 ---
 
@@ -9,47 +14,51 @@ Thanks for your interest in improving AgentFlow MCP. This document explains how 
 ```bash
 git clone https://github.com/ayyagarisujanreddy123/AgentFlow.git
 cd AgentFlow
+
+# Skills work — no build needed:
+node test/skills.mjs                  # 62 structure checks, no network
+
+# Legacy MCP work — everything runs from legacy/mcp/:
+cd legacy/mcp
 npm install
 npm run build
-node test/unit.mjs        # 24 unit tests
-node test/smoke.mjs       # 7 stdio MCP protocol smoke tests
+node test/unit.mjs                    # 28 unit tests
+node test/smoke.mjs                   # 7 stdio MCP protocol smoke tests
 ```
-
-Open a PR against `main` with a clear title (Conventional Commits-style preferred), tests for new behavior, and no unrelated changes.
 
 ---
 
-## Project layout
+## Repository layout
 
 ```
 AgentFlow/
-├── bin/agentflow-mcp        # Node shim that boots dist/cli/index.js
-├── src/
-│   ├── server.ts            # stdio MCP transport + tool dispatch
-│   ├── client.ts            # Anthropic SDK wrapper + retries
-│   ├── config.ts            # ~/.agentflow/config.yaml loader (hot-reload)
-│   ├── ledger.ts            # JSONL token/cost ledger
-│   ├── pricing.ts           # Per-model $/M-token rates
-│   └── tools/               # 7 MCP tools — one file each
-│       ├── read.ts
-│       ├── search.ts
-│       ├── gen.ts
-│       ├── review.ts
-│       ├── summarize.ts
-│       ├── transform.ts
-│       └── ask.ts
-├── cli/                     # `agentflow-mcp <subcommand>` implementations
-│   ├── index.ts             # commander entry
-│   ├── init.ts              # writes Claude Code MCP entry + config
-│   ├── uninstall.ts
-│   ├── serve.ts             # boots src/server.ts
-│   ├── stats.ts             # reads ledger, prints summary
-│   └── config.ts            # print / open in $EDITOR
-├── test/
-│   ├── unit.mjs             # config + ledger + pricing
-│   └── smoke.mjs            # spawns server, speaks MCP over stdio
-└── dist/                    # built JS (npm publish artifact)
+├── skills/                       # PRIMARY — one folder per skill
+│   └── agentflow-<name>/SKILL.md # trigger description + methodology + worker to dispatch
+├── agents/                       # the two worker subagents skills dispatch to
+│   ├── agentflow-haiku-worker.md  # model: haiku  (read/search/summarize/transform/ask)
+│   └── agentflow-sonnet-worker.md # model: sonnet (gen/review)
+├── test/skills.mjs               # structure validation for skills + workers (no network)
+└── legacy/mcp/                   # ARCHIVED MCP server (agentflow-mcp npm package)
+    ├── bin/agentflow-mcp         # Node shim that boots dist/cli/index.js
+    ├── src/                      # server.ts, client.ts, config.ts, ledger.ts, pricing.ts, tools/
+    ├── cli/                      # init / uninstall / serve / stats / config
+    ├── test/                     # unit.mjs + smoke.mjs (+ integration / comparison)
+    └── ARCHIVED.md               # build/run/test instructions for the MCP server
 ```
+
+---
+
+## Contributing a skill
+
+Skills are markdown — no build step.
+
+1. Create `skills/agentflow-<name>/SKILL.md` with `name` + `description` frontmatter. The `description` is the trigger Claude Code matches on; make it specific and example-rich.
+2. In the body, embed the methodology/output-format prompt and instruct the primary session to dispatch a worker: `agentflow-sonnet-worker` if correctness matters (real bugs, resolvable imports), otherwise `agentflow-haiku-worker`.
+3. Only add a new worker in `agents/` if you need a different model pin — the two generic workers serve all current skills.
+4. Run `node test/skills.mjs` (and extend its `EXPECTED_SKILLS` list).
+5. If the skill mirrors a legacy MCP tool, keep its methodology prompt in sync with the matching `SYSTEM` constant in `legacy/mcp/src/tools/`.
+
+The MCP-specific guidance below applies only to work inside `legacy/mcp/`.
 
 ---
 
