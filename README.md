@@ -23,7 +23,7 @@
 npx agentflow-skills install
 ```
 
-<sub><a href="#install">Install</a> • <a href="#how-it-works">How It Works</a> • <a href="#the-skills">Skills</a> • <a href="#whats-different-from-the-mcp-version">vs MCP</a> • <a href="#legacy-the-mcp-server">Legacy MCP</a> • <a href="#license">License</a></sub>
+<sub><a href="#install">Install</a> • <a href="#how-it-works">How It Works</a> • <a href="#the-skills">Skills</a> • <a href="#when-it-pays-off-the-benchmark">Benchmark</a> • <a href="#whats-different-from-the-mcp-version">vs MCP</a> • <a href="#legacy-the-mcp-server">Legacy MCP</a> • <a href="#license">License</a></sub>
 
 </div>
 
@@ -176,6 +176,36 @@ Two pieces:
   subagents. The Haiku worker handles extraction (read, search, summarize,
   transform, ask); the Sonnet worker handles correctness-sensitive work (gen,
   review). Methodology lives in the skill, so two workers serve all seven skills.
+
+---
+
+## When it pays off — the benchmark
+
+The context firewall isn't free, and it isn't always a win. We ran the **same
+code review** with and without `agentflow-review` across two file sizes and
+measured two things: **main-context tokens** (what the firewall protects) and
+**total tokens spent** (main + worker). Same findings both ways — no quality cost.
+
+| File | Size | Main-context (skill vs inline) | Total spend |
+|---|---|---|---|
+| `client.ts` | 1.8 KB | **+92 %** ❌ skill costs more | +1140 % ❌ |
+| `comparison.mjs` | 9.8 KB | **−42 %** ✅ skill saves | +299 % ❌ |
+
+The skill's main-context cost is roughly **flat** (~1.3–1.8k tokens: methodology
+load + dispatch + returned findings) — it doesn't grow with the file. Inline cost
+grows with the file. They cross at **~5 KB**:
+
+- **Input > ~5 KB** → use the skill. The bulk never enters your session, and the
+  saving widens as the file grows (projected **−83 %** on 30 KB).
+- **Small input, or you're counting total tokens/dollars** → read inline. Below
+  the crossover the dispatch overhead is pure loss, and total spend is *always*
+  higher with a worker (it's a whole second context).
+
+Full method, per-arm numbers, and reproduce steps: **[COMPARISON.md](./COMPARISON.md)**.
+
+> Honest framing: the firewall trades **more total tokens** for a **cleaner main
+> session**. That's the right trade in a long session where context headroom is
+> the constraint — not when you're optimizing raw spend.
 
 ---
 
