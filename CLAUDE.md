@@ -31,6 +31,8 @@ agents/
 
 **Honest scope.** `read` and `search` overlap with native `Read` / `Explore` (which already isolates search in a subagent). Their only edge is the Haiku pin and a structured output format — they're the weakest of the seven. `review` and `gen` are the strongest; their value was always the methodology, not the transport.
 
+**The context firewall has a crossover (~5 KB).** A dispatched skill's main-context cost is roughly flat — `SKILL.md` methodology load + dispatch prompt + returned result, independent of input size. Inline reading grows with the file. So the firewall only saves main-context tokens **above ~5 KB**; below that the dispatch overhead is a net loss and native tools are cheaper. Total token spend is *always* higher with a worker (it's a second full context). Don't route small inputs through a skill. The benchmark behind this — same review task, two file sizes, both metrics — lives in [`COMPARISON.md`](./COMPARISON.md). Lighter-methodology skills (`read`, `search`, `summarize`) carry less fixed overhead, so their crossover sits below 5 KB.
+
 ### Skills tests
 
 ```bash
