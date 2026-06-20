@@ -14,6 +14,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the
 - `test/skills.mjs` — 62 no-network structure checks (skill frontmatter, worker wiring, model pins).
 - `test/installer.mjs` — 11 checks driving the installer into a temp dir (copy / skip / force / uninstall / dry-run).
 - CI split into a `skills` job (root, runs both no-network suites) and a `legacy-mcp` job (runs in `legacy/mcp/`).
+- **`COMPARISON.md`** — skills-era context-cost benchmark. The MCP ledger is gone, so it measures the actual pitch instead: main-context tokens (the firewall) vs total spend, same `agentflow-review` task across two file sizes. Establishes the **~5 KB crossover** — the firewall only saves main-context above ~5 KB; below that, dispatch overhead is a net loss and total spend is always higher. README and `CLAUDE.md` reference it.
 
 ### Archived
 - The entire MCP server (`agentflow-mcp` npm package: `src/`, `cli/`, `bin/`, tests, manifests, COMPARISON/TESTING docs) moved to `legacy/mcp/`, unchanged and still installable. See `legacy/mcp/ARCHIVED.md`. Build/run/test commands for it now run from that directory.
