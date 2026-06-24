@@ -9,6 +9,18 @@ Open a PR against `main` with a clear title (Conventional Commits-style preferre
 
 ---
 
+## Merge requirements
+
+`main` is protected. A PR can only merge once **all** of these pass:
+
+- **CI green** — `Skills structure tests` and `Legacy MCP build and test` (Node 18/20/22) must succeed.
+- **Claude review ran** — every PR is auto-reviewed by `anthropics/claude-code-action` using the repo's own `agentflow-review` methodology (the `Claude review` check). It posts `SEVERITY/ISSUE/FIX` inline comments; address or justify anything CRITICAL/HIGH before requesting approval.
+- **1 human approval** — a maintainer reviews the bot findings and approves. New commits dismiss stale approvals, so re-request after pushing fixes.
+
+Force-pushes and branch deletion on `main` are disabled. (Maintainers are exempt from these gates only for emergency fixes.)
+
+---
+
 ## TL;DR
 
 ```bash
