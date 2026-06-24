@@ -28,6 +28,12 @@ Don't leave a reasoning-heavy tool on the Haiku default.
 - Default model: <!-- haiku / sonnet -->
 - Justification:
 
+## Merge gate
+
+- [ ] CI checks green (skills + legacy MCP across Node 18/20/22)
+- [ ] `Claude review` ran — CRITICAL/HIGH findings addressed or justified in a reply
+- [ ] Ready for the 1 required maintainer approval
+
 ## Docs
 
 - [ ] README updated (if user-visible behavior changed)
